@@ -106,6 +106,7 @@ const TimeLineChart = () => {
                     //// https://fullcalendar.io/docs/events-array
                     //// https://fullcalendar.io/docs/expandRows
                     //// most import feeding : https://fullcalendar.io/docs/resources-json-feed
+                    key={isMobile}
                     schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                     initialDate="2022-10-03"
                     ref={calendarRef}

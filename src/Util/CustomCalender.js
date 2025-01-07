@@ -3,19 +3,23 @@ export const handleToday = (calendarRef, view, setTypo) => {
         const calendarApi = calendarRef.current.getApi();
         const today = new Date();
         //// filteration of view based where your filter is set
-        if (view === "resourceTimelineMonth") {
+        if (view === "resourceTimelineMonth" || "dayGridMonth") {
             calendarApi.changeView("resourceTimelineMonth");
-        } else if (view === "resourceTimelineWeek") {
+
+        } else if (view === "resourceTimelineWeek" || "timeGridWeek") {
             calendarApi.changeView("resourceTimelineWeek");
-        } else if (view === "resourceTimelineDay") {
+
+        } else if (view === "resourceTimelineDay" || "timeGridDay") {
             calendarApi.changeView("resourceTimelineDay");
         }
         calendarApi.gotoDate(today); // Navigate to today's date
         setTypo(calendarApi.view.title)
     }
 };
+
+//// the below things are happen with the help of the calendar api and the calendar ref
 export const handleNext = (calendarRef, setTypo) => {
-    console.log(calendarRef.current.calendar)
+    // console.log(calendarRef.current.calendar)
     const calendarApi = calendarRef.current.getApi();
     calendarApi.next();
     setTypo(calendarRef.current.calendar.currentData.viewTitle);
@@ -37,11 +41,9 @@ export const changeView = (calendarRef, setView, newView, setTypo) => {
 };
 
 export const getResources = (layers, overrideLayer, finalSchedule) => {
-
     // console.log(layers, overrideLayer, finalSchedule)
-
     let anonymous = []
-
+    // all the resources are rendered sorting by layer title it's a default feature of fullcalendar
     const resources = layers.map((layer) => ({
         id: `layer-${layer.number}`,
         title: `Layer ${layer.number}`,
@@ -62,7 +64,7 @@ export const getResources = (layers, overrideLayer, finalSchedule) => {
             title: "Final Schedule",
         });
     }
-
+    //// i just mentioned for example if you want to add anonymous layer then you can do it here
     if (anonymous.length >= 0) {
         resources.push({
             id: "anonymous-layer",
@@ -73,13 +75,17 @@ export const getResources = (layers, overrideLayer, finalSchedule) => {
     return resources;
 }
 
-
+/// from getting arguments TimelineChart.js
 export const handleEvents = (layers, finalSchedule, overrideLayer, users) => {
     const allEvents = [];
+
+    //// seperate the events based on the layer and push into single array allEvents 
+    //// here two nested array that is layers and users
     layers.forEach((layer) => {
         layer.layers.forEach((event) => {
             const user = users.find((user) => user.id === event.userId);
             allEvents.push({
+                //// the resourceId must be same as resourceId in the calendar as we passed in the resource object or we can't get the event for that particular layer otherwise rest of the things are common as usual another library
                 resourceId: `layer-${layer.number}`,
                 title: user ? user.name : "Unknown User",
                 start: event.startDate,

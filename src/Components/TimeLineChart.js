@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-//// we are going to do time line chart here with full calender library let's start
+//// we are going to do some customization to full calender and we are going to use full calender library for this 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -13,29 +13,25 @@ import EventContent from './EventContent.js'
 import "../css/event.css"
 import getCalendarViews from '../Util/CustomView.js'
 
-
-// import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-
 const TimeLineChart = () => {
     const [view, setView] = useState('dayGridMonth')
     const [typo, setTypo] = useState("October 2022")
-    const calendarRef = useRef(null)
+    const calendarRef = useRef(null)///// plays a vital role in the calendar one of the most important thing is to get the reference of the calendar then only we can do the customization
     const [event, setEvents] = useState([])
     const [resources, setResources] = useState([])
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
     const views = getCalendarViews(isMobile)
 
 
     useEffect(() => {
-        const fetchEvents = async () => { // Make it async
+        const fetchEvents = () => {
             try {
                 const resources = getResources(event_data.layers, event_data.overrideLayer, event_data.finalSchedule);
                 const handledEvents = handleEvents(event_data.layers, event_data.finalSchedule, event_data.overrideLayer, event_members.users)
 
                 setEvents(handledEvents);
                 setResources(resources);
-                // console.log("Events set:", handledEvents)
+                // console.log("eventset", handledEvents)
             } catch (error) {
                 console.error("Something happend", error.message);
             }
@@ -46,13 +42,17 @@ const TimeLineChart = () => {
 
 
     useEffect(() => {
+        // Add event listener for window resize whenever the window is resized
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Update state on resize
+            const isMobileNow = window.innerWidth <= 768;
+            if (isMobileNow !== isMobile) {
+                setIsMobile(isMobileNow);
+            }
         };
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
+    }, [isMobile]);
 
     // console.log(event)
 
@@ -101,11 +101,7 @@ const TimeLineChart = () => {
 
             <div>
                 <FullCalendar
-                    //// full customization don't panic just it's all just built in customization just go through it and our logics are somewhere
-                    //// refered from official documentation of full calender easy to implement 
-                    //// https://fullcalendar.io/docs/events-array
-                    //// https://fullcalendar.io/docs/expandRows
-                    //// most import feeding : https://fullcalendar.io/docs/resources-json-feed
+                    //// full customization don't panic just it's all just built in customization just go through it and our logicssomewhere
                     key={isMobile}
                     schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                     initialDate="2022-10-03"
@@ -115,6 +111,7 @@ const TimeLineChart = () => {
                     headerToolbar={false}
                     resources={resources}
                     eventContent={EventContent}
+                    //// the event will take care to map as per the resourceId and show the event accordingly so no panic no rocket science
                     events={event}
                     expandRows={true}
                     resourceAreaWidth={150}
@@ -133,4 +130,12 @@ const TimeLineChart = () => {
     )
 }
 
-export default TimeLineChart    
+export default TimeLineChart
+
+
+////// REFERENCE DOCUMENTATION ///////////
+//// refered from official documentation of full calender easy to implement
+//// https://fullcalendar.io/docs/events-array
+//// https://fullcalendar.io/docs/expandRows
+//// most import feeding : https://fullcalendar.io/docs/resources-json-feed
+//// https://fullcalendar.io/docs/daygrid-view#week--day-view

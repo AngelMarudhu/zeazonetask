@@ -1,0 +1,53 @@
+:root {
+  --fc-border-color: rgb(106, 102, 102);
+  --fc-daygrid-event-dot-width: 5px;
+  width: 100vw;
+}
+
+.fc th {
+  font-size: 14px;
+}
+
+.fc table {
+  font-size: 10px;
+}
+
+.fc .fc-datagrid-cell-cushion {
+  font-size: 1.2rem;
+}
+
+.event-class {
+  width: 100%;
+}
+
+/* In your CSS file (event.css) */
+.fc-resource-timeline .fc-body .fc-scroller {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.fc-resource-area {
+  width: 150px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fc-timeline-event {
+  font-size: 10px;
+}
+
+@media (max-width: 768px) {
+  .fc-timeline-header-row {
+    height: auto !important;
+  }
+
+  .fc-timeline-header-row th {
+    writing-mode: vertical-lr;
+    padding: 8px 4px;
+  }
+
+  .fc-timeline {
+    min-width: 500px; /* Prevents too much squishing */
+  }
+}

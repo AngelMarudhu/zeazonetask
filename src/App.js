@@ -3,7 +3,7 @@ import TimeLineChart from "./Components/TimeLineChart";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ width: "100%" }} >
       <TimeLineChart />
     </div>
   );

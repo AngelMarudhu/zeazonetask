@@ -11,7 +11,7 @@ import { handleEvents, getResources } from '../Util/CustomCalender.js'
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import EventContent from './EventContent.js'
 import "../css/event.css"
-import getCalendarViews from '../Util/CustomView.js'
+
 
 const TimeLineChart = () => {
     const [view, setView] = useState('dayGridMonth')
@@ -20,7 +20,7 @@ const TimeLineChart = () => {
     const [event, setEvents] = useState([])
     const [resources, setResources] = useState([])
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const views = getCalendarViews(isMobile)
+
 
 
     useEffect(() => {
@@ -49,7 +49,6 @@ const TimeLineChart = () => {
                 setIsMobile(isMobileNow);
             }
         };
-
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [isMobile]);
@@ -71,7 +70,6 @@ const TimeLineChart = () => {
                     width: '100vw'
                 }
             }}>
-
                 <ButtonGroup
                     variant="outlined"
                     color="secondary"
@@ -86,7 +84,7 @@ const TimeLineChart = () => {
 
                     <Button onClick={() => changeView(calendarRef, setView, isMobile ? "dayGridMonth" : "resourceTimelineMonth", setTypo)}>Month</Button>
                     <Button onClick={() => changeView(calendarRef, setView, isMobile ? "timeGridWeek" : "resourceTimelineWeek", setTypo)}>1-Week</Button>
-                    <Button onClick={() => changeView(calendarRef, setView, isMobile ? "timeGridTwoWeeks" : "resourceTimelineWeek", setTypo)}>
+                    <Button onClick={() => changeView(calendarRef, setView, isMobile ? "timeGridTwoWeeks" : "resourceTimelineTwoWeeks", setTypo)}>
                         2-Weeks
                     </Button>
                     <Button onClick={() => changeView(calendarRef, setView, isMobile ? "timeGridTwoDays" : "resourceTimelineTwoDays", setTypo)}>2-Days</Button>
@@ -120,16 +118,57 @@ const TimeLineChart = () => {
                     locale="en-IN"
                     firstDay={1}
                     //// my customization placed on customview.js file 
-                    views={views}
-                // events={event}
+                    views={{
+                        resourceTimelineMonth: {
+                            type: isMobile ? "dayGridMonth" : "resourceTimeline",
+                            duration: { months: 1 },
+                            buttonText: "Month",
+                        },
 
+                        resourceTimelineWeek: {
+                            type: "resourceTimeline",
+                            duration: { weeks: 1 },
+                            buttonText: "Week",
+                            // dateAlignment: "week",
+                            // dateAlignment: "day" ensures that the view starts exactly from the initialDate instead of aligning to the nearest start of the week.
+                            // dateAlignment: "day"
+                        },
+                        resourceTimelineTwoWeeks: {
+                            type: "resourceTimeline",
+                            duration: { weeks: 2 },
+                            buttonText: "2 Weeks",
+                            // dateAlignment: "day"
+                        },
+                        resourceTimelineTwoDays: {
+                            type: "resourceTimeline",
+                            duration: { days: 2 },
+                            buttonText: "2 Days",
+
+                        },
+                        resourceTimelineDay: {
+                            type: "resourceTimeline",
+                            duration: { days: 1 },
+                            buttonText: "Day",
+                        },
+                        timeGridTwoWeeks: {
+                            type: "timeGrid",
+                            duration: { weeks: 2 },
+                            buttonText: "2 Weeks",
+                        },
+                        timeGridTwoDays: {
+                            type: "timeGrid",
+                            duration: { days: 2 },
+                            buttonText: "2 Days",
+
+                        }
+                    }}
+                // events={event}
                 >
                 </FullCalendar >
             </div>
         </Container >
     )
 }
-
 export default TimeLineChart
 
 

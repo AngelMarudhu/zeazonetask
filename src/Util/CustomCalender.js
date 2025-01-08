@@ -3,13 +3,13 @@ export const handleToday = (calendarRef, view, setTypo) => {
         const calendarApi = calendarRef.current.getApi();
         const today = new Date();
         //// filteration of view based where your filter is set
-        if (view === "resourceTimelineMonth" || "dayGridMonth") {
+        if (view === "resourceTimelineMonth") {
             calendarApi.changeView("resourceTimelineMonth");
 
-        } else if (view === "resourceTimelineWeek" || "timeGridWeek") {
+        } else if (view === "resourceTimelineWeek") {
             calendarApi.changeView("resourceTimelineWeek");
 
-        } else if (view === "resourceTimelineDay" || "timeGridDay") {
+        } else if (view === "resourceTimelineDay") {
             calendarApi.changeView("resourceTimelineDay");
         }
         calendarApi.gotoDate(today); // Navigate to today's date
